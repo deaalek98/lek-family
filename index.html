@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>شجرة عائلة لك — تفاعلية (بحث محسّن)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Naskh Arabic", "Amiri", Tahoma, Arial, sans-serif; background:#fafafa; margin:0; }
+    header { background:#0d6efd; color:#fff; padding:14px 20px; }
+    header h1 { margin:0; font-size:20px; }
+    main { padding:18px 14px; max-width:900px; margin:auto; }
+    .hint { color:#333; background:#fff; border:1px solid #e7e7e7; padding:10px 12px; border-radius:10px; margin-bottom:14px; }
+    .search-box { margin-bottom:14px; display:flex; gap:8px; flex-wrap:wrap; }
+    .search-box input { flex:1; padding:10px 12px; border-radius:10px; border:1px solid #ddd; font-size:16px; }
+    .search-box button { padding:10px 14px; border-radius:10px; border:1px solid #ddd; background:#fff; cursor:pointer; }
+    .tree { list-style: none; padding-inline-start: 0; }
+    .tree, .tree ul { margin: 0; padding: 0; }
+    .tree li { list-style: none; position: relative; margin: 4px 0; padding: 6px 10px; background:#fff; border:1px solid #eee; border-radius:12px; }
+    .label { display: inline-flex; align-items: center; gap:8px; cursor: pointer; user-select:none; }
+    .caret { width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-right: 8px solid #666; transition: transform .2s ease; }
+    .expanded > .label .caret { transform: rotate(-90deg); } /* RTL */
+    .children { margin: 8px 18px 0 0; display: none; }
+    .expanded > .children { display: block; }
+    mark { background: #ffe08a; padding:0 2px; border-radius:3px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>شجرة عائلة لك — تفاعلية (بحث محسّن)</h1>
+  </header>
+  <main>
+    <div class="hint">اضغط على الاسم لفتح/إغلاق الأبناء. استخدم البحث للوصول السريع. البحث الآن ذكي: يتجاهل التشكيل ويُوحّد الألف/الياء ويظهر الآباء عند تطابق الأبناء.</div>
+    <div class="search-box">
+      <input id="q" type="search" placeholder="ابحث بالاسم (مثال: أحمد، عبد الحسيب، خالد)">
+      <button id="clearBtn">مسح</button>
+      <button id="expandAll">فتح الكل</button>
+      <button id="collapseAll">إغلاق الكل</button>
+    </div>
+
+    <ul id="tree" class="tree">
+      <li class="node expanded">
+        <div class="label"><span class="caret"></span><span class="name">خالد بيك لك</span></div>
+        <ul class="children">
+
+          <li class="node">
+            <div class="label"><span class="caret"></span><span class="name">سعد لك</span></div>
+            <ul class="children">
+
+              <li><div class="label"><span class="name">فاروق سعد لك</span></div></li>
+              <li><div class="label"><span class="name">عبد الكريم سعد لك</span></div></li>
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">غازي سعد لك</span></div>
+                <ul class="children">
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">شادي غازي لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">جود شادي لك</span></div></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">فهيم سعد لك</span></div>
+                <ul class="children">
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">عصام فهيم لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">طلال عصام لك</span></div></li>
+                      <li><div class="label"><span class="name">قصي عصام لك</span></div></li>
+                    </ul>
+                  </li>
+
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">علاء فهيم لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">عبد اللطيف علاء لك</span></div></li>
+                      <li><div class="label"><span class="name">علي علاء لك</span></div></li>
+                    </ul>
+                  </li>
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">عامر فهيم لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">فاروق عامر لك</span></div></li>
+                    </ul>
+                  </li>
+
+                </ul>
+              </li>
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">عدنان سعد لك</span></div>
+                <ul class="children">
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">وليد عدنان لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">جاد وليد لك</span></div></li>
+                    </ul>
+                  </li>
+                  <li><div class="label"><span class="name">سعيد عدنان لك</span></div></li>
+                  <li><div class="label"><span class="name">بسام عدنان لك</span></div></li>
+                  <li><div class="label"><span class="name">غسان عدنان لك</span></div></li>
+                </ul>
+              </li>
+
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">أيمن سعد لك</span></div>
+                <ul class="children">
+                  <li><div class="label"><span class="name">محمد راسم أيمن لك</span></div></li>
+                  <li><div class="label"><span class="name">أحمد أيمن لك</span></div></li>
+                  <li><div class="label"><span class="name">ضياء أيمن لك</span></div></li>
+                </ul>
+              </li>
+
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">خالد سعد لك</span></div>
+                <ul class="children">
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">وليد خالد لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">خالد وليد لك</span></div></li>
+                      <li><div class="label"><span class="name">مهند وليد لك</span></div></li>
+                    </ul>
+                  </li>
+                  <li><div class="label"><span class="name">مهند خالد لك</span></div></li>
+                </ul>
+              </li>
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">عمر سعد لك</span></div>
+                <ul class="children">
+                  <li><div class="label"><span class="name">إبراهيم عمر لك</span></div></li>
+                  <li><div class="label"><span class="name">إسماعيل عمر لك</span></div></li>
+                  <li><div class="label"><span class="name">يوسف عمر لك</span></div></li>
+                </ul>
+              </li>
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">رياض سعد لك</span></div>
+                <ul class="children">
+                  <li><div class="label"><span class="name">وائل رياض لك</span></div></li>
+                </ul>
+              </li>
+
+            </ul>
+          </li>
+
+          <li class="node">
+            <div class="label"><span class="caret"></span><span class="name">عبد الحسيب لك</span></div>
+            <ul class="children">
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">ناصر عبد الحسيب لك</span></div>
+                <ul class="children">
+                  <li><div class="label"><span class="name">يحيى ناصر لك</span></div></li>
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">نور ناصر لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">ناصر نور لك</span></div></li>
+                      <li><div class="label"><span class="name">محمود نور لك</span></div></li>
+                      <li><div class="label"><span class="name">أحمد نور لك</span></div></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+
+              <li class="node">
+                <div class="label"><span class="caret"></span><span class="name">ياسر عبد الحسيب لك</span></div>
+                <ul class="children">
+
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">عبد الحسيب ياسر لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">ياسر عبد الحسيب لك</span></div></li>
+                      <li><div class="label"><span class="name">مصطفى عبد الحسيب لك</span></div></li>
+                      <li><div class="label"><span class="name">زين عبد الحسيب لك</span></div></li>
+                    </ul>
+                  </li>
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">حسام ياسر لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">أيهم حسام لك</span></div></li>
+                    </ul>
+                  </li>
+
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">بشار ياسر لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">يزن بشار لك</span></div></li>
+                    </ul>
+                  </li>
+                  <li class="node">
+                    <div class="label"><span class="caret"></span><span class="name">حسان ياسر لك</span></div>
+                    <ul class="children">
+                      <li><div class="label"><span class="name">ماهر حسان لك</span></div></li>
+                    </ul>
+                  </li>
+                  <li><div class="label"><span class="name">أنس ياسر لك</span></div></li>
+                  <li><div class="label"><span class="name">محمد ياسر لك</span></div></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+        </ul>
+      </li>
+    </ul>
+  </main>
+
+  <script>
+    // Toggle expand/collapse on label click
+    document.addEventListener('click', function(e){
+      const lbl = e.target.closest('.label');
+      if(!lbl) return;
+      const li = lbl.closest('li');
+      if(li && li.classList.contains('node')){
+        li.classList.toggle('expanded');
+      }
+    });
+
+    const q = document.getElementById('q');
+    const clearBtn = document.getElementById('clearBtn');
+    const expandAll = document.getElementById('expandAll');
+    const collapseAll = document.getElementById('collapseAll');
+
+    function removeMarks(){
+      document.querySelectorAll('.name').forEach(n => {
+        n.innerHTML = n.textContent;
+      });
+    }
+
+    function ensureAncestorsExpanded(li){
+      let p = li.parentElement;
+      while(p){
+        const owner = p.closest('li');
+        if(owner && owner.classList.contains('node')){
+          owner.classList.add('expanded');
+          p = owner.parentElement;
+        } else {
+          p = null;
+        }
+      }
+    }
+
+    // Normalize Arabic: unify alef/ya, strip diacritics, trim/space, lower
+    function normalize(text) {
+      return text
+        .replace(/[أإآا]/g, 'ا')
+        .replace(/ى/g, 'ي')
+        .replace(/ة/g, 'ه') // optional: treat ة like ه for easier matching
+        .replace(/[\u064B-\u0652\u0670]/g, '') // tashkeel + superscript alef
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase();
+    }
+
+    // Build regex that matches Arabic-insensitive variants of the query (for highlighting)
+    function buildArabicPattern(str){
+      const diac = '[\\u064B-\\u0652\\u0670]*';
+      const map = {
+        'ا': '[اأإآا]',
+        'أ': '[اأإآا]',
+        'إ': '[اأإآا]',
+        'آ': '[اأإآا]',
+        'ى': '[يى]',
+        'ي': '[يى]',
+        'ة': '[ةه]',
+        'ه': '[هة]'
+      };
+      // escape regex specials
+      function esc(ch){ return /[.*+?^${}()|[\]\\]/.test(ch) ? '\\' + ch : ch; }
+      let out = '';
+      for(const ch of str.trim()){
+        if(/\s/.test(ch)){
+          out += '\\s+'; // collapse any whitespace
+        } else if(map[ch]){
+          out += map[ch] + diac;
+        } else {
+          out += esc(ch) + diac;
+        }
+      }
+      return new RegExp(out, 'gi');
+    }
+
+    // Highlight all tokens without double-marking
+    function highlightText(el, tokens){
+      const raw = el.textContent;
+      if(!tokens.length) { el.innerHTML = raw; return; }
+      const patterns = tokens
+        .filter(t => t.length > 0)
+        .map(t => buildArabicPattern(t));
+      if(!patterns.length){ el.innerHTML = raw; return; }
+
+      // Replace using one pass per pattern; avoid nesting by replacing <mark>...</mark> back to plain before each pass.
+      let html = raw;
+      for(const re of patterns){
+        html = html.replace(/<\/?mark>/g, ''); // remove previous marks
+        html = html.replace(re, (m) => `<mark>${m}</mark>`);
+      }
+      el.innerHTML = html;
+    }
+
+    function walkAndFilter(li, tokens){
+      // returns true if li or any descendant matches
+      const nameEl = li.querySelector(':scope > .label .name');
+      const ownRaw = nameEl ? nameEl.textContent : '';
+      const ownNorm = ownRaw ? normalize(ownRaw) : '';
+
+      const ownMatch = tokens.length
+        ? tokens.every(t => ownNorm.includes(normalize(t)))
+        : true;
+
+      // check children
+      const childrenUL = li.querySelector(':scope > .children');
+      let childMatch = false;
+      if(childrenUL){
+        const childLis = childrenUL.querySelectorAll(':scope > li');
+        childMatch = Array.from(childLis).map(c => walkAndFilter(c, tokens)).some(Boolean);
+      }
+
+      const matched = ownMatch || childMatch;
+      li.style.display = matched ? '' : 'none';
+
+      if(ownMatch && nameEl && tokens.length){
+        highlightText(nameEl, tokens);
+        ensureAncestorsExpanded(li);
+      }
+      return matched;
+    }
+
+    function filterTree(term){
+      removeMarks();
+      const root = document.querySelector('#tree > li');
+      if(!root) return;
+
+      if(!term.trim()){
+        document.querySelectorAll('#tree li').forEach(li => li.style.display = '');
+        return;
+      }
+
+      // split by spaces -> AND match for all tokens
+      const tokens = term.split(/\s+/).map(t => t.trim()).filter(Boolean);
+      walkAndFilter(root, tokens);
+    }
+
+    q.addEventListener('input', () => filterTree(q.value));
+    clearBtn.addEventListener('click', () => {
+      q.value=''; filterTree('');
+    });
+
+    expandAll.addEventListener('click', () => {
+      document.querySelectorAll('.node').forEach(n => n.classList.add('expanded'));
+    });
+    collapseAll.addEventListener('click', () => {
+      document.querySelectorAll('.node').forEach(n => n.classList.remove('expanded'));
+      const root = document.querySelector('#tree > li.node');
+      if(root) root.classList.add('expanded');
+    });
+  </script>
+</body>
+</html>
